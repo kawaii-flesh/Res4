@@ -1,0 +1,16 @@
+.vscode
+build
+output
+research
+tests
+
+loader/payload_00.h
+
+loader/payload_01.h
+
+*.exe
+
+tools/lz
+tools/bin2c
+source/format.sh
+updates.txt
