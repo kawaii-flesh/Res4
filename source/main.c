@@ -46,8 +46,8 @@
 #include "gfx/gfxutils.h"
 #include "hid/hid.h"
 #include "hid/touchutils.h"
-#include "res4/res4.h"
 #include "res4/gfx/gfx.h"
+#include "res4/res4.h"
 #include "tegraexplorer/tconf.h"
 
 boot_cfg_t __attribute__((section("._boot_cfg"))) b_cfg;
