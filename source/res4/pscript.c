@@ -23,8 +23,10 @@ int executeScript(const char* filename) {
     char line[256];
     while (f_gets(line, sizeof(line), &file)) {
         line[strcspn(line, "\n")] = '\0';
-
+        char originalLine[256];
+        strcpy(originalLine, line);
         char* command = strtok(line, "|");
+        char* originalCommand = command;
         char* param1 = strtok(NULL, "|");
         char* param2 = strtok(NULL, "|");
 
@@ -33,16 +35,17 @@ int executeScript(const char* filename) {
             int forceSuccess = (command[0] == '~');
             if (forceSuccess) {
                 command++;
+            } else if (command[0] == '?') {
+                command++;
+                const char* executionConfirm[] = {"Do you want to execute this command?", command, param1, param2, NULL};
+                const enum ConfirmationDialogResult cresult = confirmationDialog(executionConfirm, ENO);
+                gfx_clearscreenR4();
+                if (cresult == ENO) {
+                    continue;
+                }
             }
 
-            if (param2) {
-                print(INFO, "%s: %s %s ", command, param1, param2);
-            } else if (param1) {
-                print(INFO, "%s: %s ", command, param1);
-            } else {
-                print(INFO, "%s ", command);
-            }
-
+            print(INFO, "%s ", originalLine);
             if (strcmp(command, "rm") == 0) {
                 if (!param1) {
                     print(ERROR, "Missing parameter for command 'rm'. Expected: rm|<file/directory>\n");
@@ -59,10 +62,11 @@ int executeScript(const char* filename) {
                 if (!param1 || !param2) {
                     print(ERROR, "Missing parameter(s) for command 'extract'. Expected: extract|<tar archive>|<destination>\n");
                 } else {
+                    print(INFO, "\n");
                     res = extract(param1, param2);
                 }
             } else {
-                print(ERROR, "Unknown command: '%s'\n", command);
+                print(ERROR, "Unknown command\n");
                 res = 0;
             }
 
@@ -71,7 +75,7 @@ int executeScript(const char* filename) {
             } else if (res) {
                 print(GOOD, "Ok\n");
             } else {
-                print(ERROR, "Command execution failed: %s\n", command);
+                print(ERROR, "\nCommand execution failed:\n%s\n", originalLine);
                 const char* commandErrorMsg[] = {"An error occurred while executing the command.", "Do you want to continue anyway?", NULL};
                 if (confirmationDialog(commandErrorMsg, ENO) == ENO) {
                     gfx_clearscreenR4();

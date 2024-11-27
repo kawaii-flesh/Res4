@@ -17,7 +17,7 @@ LPVERSION := \"$(LPVERSION_MAJOR).$(LPVERSION_MINOR).$(LPVERSION_BUGFX)\"
 ################################################################################
 
 R4VERSION_MAJOR := 1
-R4VERSION_MINOR := 0
+R4VERSION_MINOR := 1
 R4VERSION_BUGFX := 0
 
 ################################################################################
