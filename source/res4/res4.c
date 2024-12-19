@@ -37,7 +37,7 @@ void Res4() {
             } else {
                 print(INFO, "\nThe verification list has been parsed\n");
                 print(INFO, "Start checking checksums\n");
-                int compareResult = 0;
+                int compareResult = 1;
                 for (int i = 0; i < entriesCount; ++i) {
                     const char* filePath = sha256List[i].filePath;
                     print(INFO, "target: %s offset: %d\n", filePath, sha256List[i].offset);
